@@ -36,6 +36,77 @@ dependencies {
 }
 ```
 
+## 使用
+
+### 1.为Activity变量注入数据，可以设置key,如果不设置key，则取变量名
+```java
+public class MainActivity extends AppCompatActivity {
+
+    //注入数据，key为agr1
+    @Paste
+    String agr1;
+
+    //注入数据，key为您指定的name
+    @Paste("name")
+    String agr2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //注入数据
+        Tack.bind(this);
+
+    }
+}
+```
+### 2.Fragment同Acticity
+```java
+public class MainFragment extends Fragment {
+
+    //注入数据，key为agr1
+    @Paste
+    String agr1;
+
+    //注入数据，key为您指定的name
+    @Paste("name")
+    String agr2;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+       super.onViewCreated(view, savedInstanceState);
+       //注入数据
+       Tack.bind(this);
+    }
+}
+
+```
+### 3.您可以用指定数据类型注解，可以设置默认值
+支持的注解
+| Annotation   |   Data Type |
+|--------------|-------------|
+| PasteB       |   byte      |
+| PasteD       |   double    |
+| PasteF       |   float     |
+| PasteI       |   int       |
+| PasteL       |   long      |
+| PasteS       |   String    |
+| Paste        |   any       |
+```java
+public class MainActivity extends AppCompatActivity {
+
+    //指定String类型注解，默认值为abc
+    @PasteS(defaultVar = "abc")
+    String agr1;
+
+    ... ...
+}
+```
+
+
+
+
+
 ##  Gradle版本注意事项
 
 | Tack version | Android Projects |
