@@ -6,7 +6,7 @@ dependencies {
     implementation 'com.squareup:javapoet:1.9.0'
     implementation 'com.google.auto:auto-common:0.8'
 
-    api project(':lib_tack:lib_tack_annos')
+    api project(':tackannos')
 }
 
 sourceCompatibility = "8"

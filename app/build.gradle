@@ -33,7 +33,7 @@ dependencies {
 //    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
 //    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
 
-    implementation project(':lib_tack:lib_tack_annos')
-    implementation project(':lib_tack:lib_tack_api')
-    annotationProcessor project(':lib_tack:lib_tack_processor')
+    implementation project(':tackannos')
+    implementation project(':tackapi')
+    annotationProcessor project(':tackprocessor')
 }
