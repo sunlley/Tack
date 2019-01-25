@@ -83,6 +83,7 @@ public class MainFragment extends Fragment {
 ```
 ### 3.您可以用指定数据类型注解，可以设置默认值
 支持的注解
+
 | Annotation   |   Data Type |
 |--------------|-------------|
 | PasteB       |   byte      |
@@ -92,6 +93,7 @@ public class MainFragment extends Fragment {
 | PasteL       |   long      |
 | PasteS       |   String    |
 | Paste        |   any       |
+
 ```java
 public class MainActivity extends AppCompatActivity {
 
