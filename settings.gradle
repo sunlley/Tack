@@ -1,0 +1,2 @@
+include ':app'
+include ':lib_tack:lib_tack_api', ':lib_tack:lib_tack_annos', ':lib_tack:lib_tack_processor'
