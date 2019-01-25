@@ -32,13 +32,7 @@ dependencies {
 -keep class com.kayo.lib.tack.annos.**
 -keep class * implements com.kayo.lib.tack.api.Inject
 -keepclasseswithmembernames class * {
-    @com.kayo.lib.tack.annos.Paste <fields>;
-    @com.kayo.lib.tack.annos.PasteB <fields>;
-    @com.kayo.lib.tack.annos.PasteD <fields>;
-    @com.kayo.lib.tack.annos.PasteF <fields>;
-    @com.kayo.lib.tack.annos.PasteI <fields>;
-    @com.kayo.lib.tack.annos.PasteL <fields>;
-    @com.kayo.lib.tack.annos.PasteS <fields>;
+    @com.kayo.lib.tack.annos.* <fields>;
 }
 ```
 
