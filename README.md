@@ -1,4 +1,5 @@
-# Tack
+# Tack[![](https://jitpack.io/v/kayoSun/Tack.svg)](https://jitpack.io/#kayoSun/Tack)
+
 
 Tack是一款简单、快捷、轻量级的Bundle数据注入和存储的扩展框架
 
