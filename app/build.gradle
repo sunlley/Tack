@@ -10,6 +10,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    lintOptions {
+        abortOnError false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -25,13 +28,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //    implementation "android.arch.work:work-runtime:1.0.0-alpha13" // use -ktx for Kotlin
-    // optional - Firebase JobDispatcher support
-    //    implementation "android.arch.work:work-firebase:1.0.0-alpha13"
-    // optional - Test helpers
-    //    androidTestImplementation "android.arch.work:work-testing:1.0.0-alpha13"
-//    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
-//    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
 
     implementation project(':tackannos')
     implementation project(':tackapi')

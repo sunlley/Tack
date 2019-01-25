@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.auto.service:auto-service:1.0-rc4'
@@ -11,17 +11,3 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}

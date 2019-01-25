@@ -18,11 +18,16 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    api project(path: ':tackannos')
 
 }
 apply from: '../javadoc.gradle'
