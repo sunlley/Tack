@@ -10,6 +10,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -19,9 +20,9 @@ import javax.tools.Diagnostic;
 public class Utils {
 
     private Filer filer;
+    private Types types;
     private Messager messager;
     private Elements elements;
-    private Types types;
 
     private Utils(ProcessingEnvironment processingEnvironment){
         filer = processingEnvironment.getFiler();
@@ -92,6 +93,21 @@ public class Utils {
 
     public Types getTypes() {
         return types;
+    }
+
+    public String getPackageName(TypeElement element){
+        Name qualifiedName = element.getQualifiedName();
+        String classFullName = qualifiedName.toString();
+        String[] split = classFullName.split("\\.");
+        StringBuilder builder = new StringBuilder();
+        int length = split.length-1;
+        for (int i = 0; i < length; i++) {
+            builder.append(split[i]);
+            if (i != length-1){
+                builder.append(".");
+            }
+        }
+        return builder.toString();
     }
 
 }

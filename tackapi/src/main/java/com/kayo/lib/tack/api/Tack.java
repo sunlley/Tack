@@ -1,7 +1,12 @@
 package com.kayo.lib.tack.api;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import com.kayo.lib.tack.api.factories.BundleFactory;
+import com.kayo.lib.tack.api.factories.Factory;
+import com.kayo.lib.tack.api.factories.IntentFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +18,10 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Tack {
 
+    /**
+     * 注入
+     * @param target
+     */
     public static void bind(Object target){
         Class<?> aClass = target.getClass();
         ClassLoader classLoader = aClass.getClassLoader();
@@ -30,7 +39,22 @@ public class Tack {
                 | InvocationTargetException e) {
             // do nothing is ok
         }
+    }
 
+    /**
+     * 生产
+     */
+    public static BundleFactory createBundleFactory(){
+        return createBundleFactory(null);
+    }
+    public static BundleFactory createBundleFactory(Bundle bundle){
+        return new BundleFactory(bundle);
+    }
+    public static IntentFactory createIntentFactory(){
+        return createIntentFactory(null);
+    }
+    public static IntentFactory createIntentFactory(Intent bundle){
+        return new IntentFactory(bundle);
     }
 
     /**
