@@ -6,12 +6,11 @@ import com.kayo.lib.tack.api.binders.BundleBinder;
 
 /**
  * KayoSun
- * 2019-01-24
- * 23:15
+ * 2019-01-29
+ * 15:57
  * ----------
- * 注入接口
  */
-public interface Inject {
+public interface ITack {
 
     void inject(BundleBinder binder);
     void inject(Bundle bundle);

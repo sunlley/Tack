@@ -30,7 +30,10 @@ dependencies {
 ## 混淆配置
 ```Proguard
 -keep class com.kayo.lib.tack.annos.**
+-keep class * extends com.kayo.lib.tack.api.ITackImpl
 -keep class * implements com.kayo.lib.tack.api.Inject
+-keep class * implements com.kayo.lib.tack.api.Reject
+-keep class * implements com.kayo.lib.tack.api.Entity
 -keepclasseswithmembernames class * {
     @com.kayo.lib.tack.annos.* <fields>;
 }

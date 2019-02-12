@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -37,24 +38,18 @@ import javax.tools.Diagnostic;
  * Paste 编译器
  */
 @AutoService(Processor.class)
+@SupportedAnnotationTypes(
+        {"com.kayo.lib.tack.annos.Paste",
+        "com.kayo.lib.tack.annos.PasteB",
+        "com.kayo.lib.tack.annos.PasteD",
+        "com.kayo.lib.tack.annos.PasteF",
+        "com.kayo.lib.tack.annos.PasteI",
+        "com.kayo.lib.tack.annos.PasteL",
+        "com.kayo.lib.tack.annos.PasteS"})
 public class TackProcess extends BaseProcess {
 
     @Override
-    protected Set<String> getAnnotationTypes() {
-        Set<String> annotations = new HashSet<>();
-        annotations.add(Paste.class.getCanonicalName());
-        annotations.add(PasteS.class.getCanonicalName());
-        annotations.add(PasteF.class.getCanonicalName());
-        annotations.add(PasteD.class.getCanonicalName());
-        annotations.add(PasteI.class.getCanonicalName());
-        annotations.add(PasteL.class.getCanonicalName());
-        annotations.add(PasteB.class.getCanonicalName());
-        return annotations;
-    }
-
-    @Override
-    public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        utils.getMessager().printMessage(Diagnostic.Kind.OTHER, "Process Tack Anno ~");
+    public boolean handler(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
 
         //1.对数据进行分类  类信息/注解变量信息
         Map<Element, List<Element>> map = new LinkedHashMap<>();
@@ -81,13 +76,14 @@ public class TackProcess extends BaseProcess {
         ClassName fragment = ClassName.bestGuess("android.support.v4.app.Fragment");
         ClassName intent = ClassName.bestGuess("android.content.Intent");
         ClassName bundle = ClassName.bestGuess("android.os.Bundle");
-        ClassName inject = ClassName.bestGuess("com.kayo.lib.tack.api.Inject");
+        ClassName tack = ClassName.bestGuess("com.kayo.lib.tack.api.ITack");
+        ClassName tackImpl = ClassName.bestGuess("com.kayo.lib.tack.api.ITackImpl");
         ClassName bundleBinder = ClassName.bestGuess("com.kayo.lib.tack.api.binders.BundleBinder");
 
         for (Map.Entry<Element, List<Element>> elementListEntry : map.entrySet()) {
             //类信息
             TypeElement classEl = (TypeElement) elementListEntry.getKey();
-            String packageName = getPackageName(classEl);
+            String packageName = utils.getPackageName(classEl);
 
             int classType = 0;//1标识 activity  2标识 fragment
             if (utils.checkSuperClass(classEl, "android.app.Activity")) {
@@ -126,63 +122,44 @@ public class TackProcess extends BaseProcess {
                     .addParameter(bundleBinder, "binder")
                     .addParameter(boolean.class, "nullable")
                     .addStatement("if(binder==null){return;}");
-            MethodSpec.Builder bindArgs2 = MethodSpec.methodBuilder("inject")
-                    .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(Override.class)
-                    .addParameter(bundle, "bundle")
-                    .addParameter(boolean.class, "nullable")
-                    .addStatement("if(bundle==null){return;}")
-                    .addStatement("$T binder = new $T(bundle)", bundleBinder, bundleBinder)
-                    .addStatement("this.inject(binder,nullable)");
-            MethodSpec.Builder bindArgs3 = MethodSpec.methodBuilder("inject")
-                    .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(Override.class)
-                    .addParameter(bundleBinder, "binder")
-                    .addStatement("if(binder==null){return;}")
-                    .addStatement("this.inject(binder,true)");
-            MethodSpec.Builder bindArgs4 = MethodSpec.methodBuilder("inject")
-                    .addModifiers(Modifier.PUBLIC)
-                    .addAnnotation(Override.class)
-                    .addParameter(bundle, "bundle")
-                    .addStatement("if(bundle==null){return;}")
-                    .addStatement("this.inject(bundle,true)");
             List<Element> elements = elementListEntry.getValue();
             List<Element> normal = new ArrayList<>();
             List<Element> special = new ArrayList<>();
             //分类
             for (Element argEl : elements) {
                 Paste paste = argEl.getAnnotation(Paste.class);
-                if (paste != null){
+                if (paste != null) {
                     special.add(argEl);
-                }else {
+                } else {
                     normal.add(argEl);
                 }
             }
             //1类
             for (Element argEl : special) {
-                createBindArgs(bindArgs, argEl,true);
+                createBindArgs(bindArgs, argEl, true);
             }
             //2类
             bindArgs.addCode("if(nullable){\n");
             for (Element argEl : normal) {
-                createBindArgs(bindArgs, argEl,true);
+                createBindArgs(bindArgs, argEl, true);
             }
             bindArgs.addCode("}else{\n");
             for (Element argEl : normal) {
-                createBindArgs(bindArgs, argEl,false);
+                createBindArgs(bindArgs, argEl, false);
             }
             bindArgs.addCode("}\n");
 
             //生成类
             TypeSpec typeSpec = TypeSpec.classBuilder(classEl.getSimpleName().toString() + "$$Tack")
-                    .addSuperinterface(inject)
+//                    .addSuperinterface(tack)
+                    .superclass(tackImpl)
                     .addModifiers(Modifier.PUBLIC)
                     .addField(field.build())
                     .addMethod(constructor.build())
                     .addMethod(bindArgs.build())
-                    .addMethod(bindArgs2.build())
-                    .addMethod(bindArgs3.build())
-                    .addMethod(bindArgs4.build())
+//                    .addMethod(bindArgs2.build())
+//                    .addMethod(bindArgs3.build())
+//                    .addMethod(bindArgs4.build())
                     .build();
             //生成java文件
             try {
@@ -196,7 +173,7 @@ public class TackProcess extends BaseProcess {
         return !map.isEmpty();
     }
 
-    private void createBindArgs(MethodSpec.Builder bindArgs, Element argEl,boolean nullable) {
+    private void createBindArgs(MethodSpec.Builder bindArgs, Element argEl, boolean nullable) {
         //参数类型
         String targetType = argEl.asType().toString();
         //参数名
@@ -210,7 +187,7 @@ public class TackProcess extends BaseProcess {
                 argKey = paste.value().trim();
             }
             String tempName = argName + "Obj";
-            createArgCodeI(bindArgs, targetType, argName, argKey, tempName,nullable);
+            createArgCodeI(bindArgs, targetType, argName, argKey, tempName, nullable);
             return;
         }
         //****解析 PasteS
@@ -230,7 +207,7 @@ public class TackProcess extends BaseProcess {
             }
             String tempName = argName + "Obj";
             String defaultVar = pasteF.defaultVar() + "f";
-            createArgCodeII(bindArgs, "getFloat", argName, argKey, defaultVar,nullable);
+            createArgCodeII(bindArgs, "getFloat", argName, argKey, defaultVar, nullable);
             return;
         }
         //****解析 PasteD
@@ -241,7 +218,7 @@ public class TackProcess extends BaseProcess {
             }
             String tempName = argName + "Obj";
             String defaultVar = pasteD.defaultVar() + "";
-            createArgCodeII(bindArgs, "getDouble", argName, argKey, defaultVar,nullable);
+            createArgCodeII(bindArgs, "getDouble", argName, argKey, defaultVar, nullable);
             return;
         }
 
@@ -253,7 +230,7 @@ public class TackProcess extends BaseProcess {
             }
             String tempName = argName + "Obj";
             String defaultVar = pasteI.defaultVar() + "";
-            createArgCodeII(bindArgs, "getInt", argName, argKey, defaultVar,nullable);
+            createArgCodeII(bindArgs, "getInt", argName, argKey, defaultVar, nullable);
             return;
         }
         //****解析 PasteL
@@ -264,7 +241,7 @@ public class TackProcess extends BaseProcess {
             }
             String tempName = argName + "Obj";
             String defaultVar = pasteL.defaultVar() + "l";
-            createArgCodeII(bindArgs, "getLong", argName, argKey, defaultVar,nullable);
+            createArgCodeII(bindArgs, "getLong", argName, argKey, defaultVar, nullable);
             return;
         }
         //****解析 PasteB
@@ -275,31 +252,31 @@ public class TackProcess extends BaseProcess {
             }
             String tempName = argName + "Obj";
             String defaultVar = "(byte)" + pasteB.defaultVar();
-            createArgCodeII(bindArgs, "getByte", argName, argKey, defaultVar,nullable);
+            createArgCodeII(bindArgs, "getByte", argName, argKey, defaultVar, nullable);
         }
     }
 
-    private void createArgCodeI(MethodSpec.Builder bindArgs, String targetType, String argName, String argKey, String tempName,boolean nullable) {
+    private void createArgCodeI(MethodSpec.Builder bindArgs, String targetType, String argName, String argKey, String tempName, boolean nullable) {
         bindArgs.addStatement("    Object $N = binder.get($S)", tempName, argKey);
         bindArgs.addCode("    if($N != null){\n        mTarget.$N = ($N)$N;\n    }\n", tempName, argName, targetType, tempName);
     }
 
-    private void createArgCodeII(MethodSpec.Builder bindArgs, String method, String argName, String argKey, String defaultVar,boolean nullable) {
-        if (nullable){
+    private void createArgCodeII(MethodSpec.Builder bindArgs, String method, String argName, String argKey, String defaultVar, boolean nullable) {
+        if (nullable) {
             if (defaultVar == null || defaultVar.trim().length() == 0) {
                 bindArgs.addCode("    mTarget.$N = binder." + method + "($S);\n", argName, argKey);
             } else {
-                bindArgs.addCode("    mTarget.$N = binder."+method+"($S,"+defaultVar+");\n", argName, argKey);
+                bindArgs.addCode("    mTarget.$N = binder." + method + "($S," + defaultVar + ");\n", argName, argKey);
             }
-        }else {
+        } else {
             if (defaultVar == null || defaultVar.trim().length() == 0) {
                 bindArgs.addCode("    Object $N = binder.get($S);\n" +
                         "    if($N != null){\n" +
-                        "        mTarget.$N = binder."+method+"($S);}\n", argName, argKey ,argName,argName,argKey);
+                        "        mTarget.$N = binder." + method + "($S);}\n", argName, argKey, argName, argName, argKey);
             } else {
                 bindArgs.addCode("    Object $N = binder.get($S);\n" +
                         "    if($N != null){\n" +
-                        "        mTarget.$N = binder."+method+"($S,"+defaultVar+");}\n", argName, argKey ,argName,argName,argKey);
+                        "        mTarget.$N = binder." + method + "($S," + defaultVar + ");}\n", argName, argKey, argName, argName, argKey);
 
             }
         }

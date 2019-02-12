@@ -2,9 +2,11 @@ apply plugin: 'java-library'
 apply plugin: 'maven'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files(org.gradle.internal.jvm.Jvm.current().toolsJar)
     implementation 'com.google.auto.service:auto-service:1.0-rc4'
     implementation 'com.squareup:javapoet:1.9.0'
     implementation 'com.google.auto:auto-common:0.8'
+//    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.9.1'
 
     api project(':tackannos')
 }
