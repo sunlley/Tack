@@ -23,17 +23,14 @@ maven { url 'https://jitpack.io' }
 
 ```Groovy
 dependencies {
-	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:0.0.2'
-	implementation 'com.github.kayoSun.Tack:tackapi:0.0.2'
+	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:0.0.3'
+	implementation 'com.github.kayoSun.Tack:tackapi:0.0.3'
 }
 ```
 ## 混淆配置
 ```Proguard
 -keep class com.kayo.lib.tack.annos.**
 -keep class * extends com.kayo.lib.tack.api.ITackImpl
--keep class * implements com.kayo.lib.tack.api.Inject
--keep class * implements com.kayo.lib.tack.api.Reject
--keep class * implements com.kayo.lib.tack.api.Entity
 -keepclasseswithmembernames class * {
     @com.kayo.lib.tack.annos.* <fields>;
 }
@@ -53,13 +50,11 @@ public class MainActivity extends AppCompatActivity {
     @Paste("name")
     String agr2;
 
+    @Inject//注入数据
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //注入数据
-        Tack.bind(this);
-
     }
 }
 ```
@@ -75,11 +70,10 @@ public class MainFragment extends Fragment {
     @Paste("name")
     String agr2;
 
+    @Inject//注入数据
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
        super.onViewCreated(view, savedInstanceState);
-       //注入数据
-       Tack.bind(this);
     }
 }
 
@@ -117,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 | Tack version | Android Projects |
 |--------------|------------------|
 | 0.0.2        | Gradle 4.6       |
+| 0.0.3        | Gradle 4.6       |
 
 
 ## 联系作者
