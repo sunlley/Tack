@@ -23,14 +23,13 @@ maven { url 'https://jitpack.io' }
 
 ```Groovy
 dependencies {
-	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:0.0.2'
-	implementation 'com.github.kayoSun.Tack:tackapi:0.0.2'
+	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:0.0.3'
+	implementation 'com.github.kayoSun.Tack:tackapi:0.0.3'
 }
 ```
 ## Proguard
 ```Proguard
 -keep class com.kayo.lib.tack.annos.**
--keep class * implements com.kayo.lib.tack.api.Inject
 -keepclasseswithmembernames class * {
     @com.kayo.lib.tack.annos.* <fields>;
 }
@@ -41,6 +40,7 @@ dependencies {
 | Tack version | Android Projects |
 |--------------|------------------|
 | 0.0.2        | Gradle 4.6       |
+| 0.0.3        | Gradle 4.6       |
 
 
 ## About Author
