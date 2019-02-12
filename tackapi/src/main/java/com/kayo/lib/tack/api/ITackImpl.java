@@ -14,11 +14,6 @@ import com.kayo.lib.tack.api.binders.BundleBinder;
 public abstract class ITackImpl implements ITack {
 
     @Override
-    public void inject(BundleBinder binder, boolean nullable) {
-
-    }
-
-    @Override
     public final void inject(Bundle bundle, boolean nullable) {
         if(bundle==null){return;};
         BundleBinder binder = new BundleBinder(bundle);

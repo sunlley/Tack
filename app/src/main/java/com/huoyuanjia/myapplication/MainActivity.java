@@ -5,6 +5,7 @@ import android.support.annotation.Keep;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.kayo.lib.tack.annos.Inject;
 import com.kayo.lib.tack.annos.Paste;
 import com.kayo.lib.tack.annos.PasteF;
 import com.kayo.lib.tack.annos.PasteL;
@@ -34,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
     @Paste("name")
     String agr2;
 
+    @Inject
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Tack.bind(this);
+//        Tack.bind(this);
         findViewById(R.id.v_text).setOnClickListener((v)->test());
         test();
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Reject
     private void test(){
         Log.i("MainActivity", "test: 测试数据");
+
 
         Bundle bundle = Tack.createBundleFactory()
                 .setConverter(new FastJsonConverter())

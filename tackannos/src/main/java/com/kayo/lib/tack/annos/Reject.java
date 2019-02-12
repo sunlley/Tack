@@ -15,6 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * ----------
  */
 @Retention(RUNTIME)
-@Target({FIELD,METHOD,TYPE})
+@Target({METHOD})
 public @interface Reject {
 }

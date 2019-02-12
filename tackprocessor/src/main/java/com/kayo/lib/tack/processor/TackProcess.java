@@ -122,26 +122,6 @@ public class TackProcess extends BaseProcess {
                     .addParameter(bundleBinder, "binder")
                     .addParameter(boolean.class, "nullable")
                     .addStatement("if(binder==null){return;}");
-//            MethodSpec.Builder bindArgs2 = MethodSpec.methodBuilder("inject")
-//                    .addModifiers(Modifier.PUBLIC)
-//                    .addAnnotation(Override.class)
-//                    .addParameter(bundle, "bundle")
-//                    .addParameter(boolean.class, "nullable")
-//                    .addStatement("if(bundle==null){return;}")
-//                    .addStatement("$T binder = new $T(bundle)", bundleBinder, bundleBinder)
-//                    .addStatement("this.inject(binder,nullable)");
-//            MethodSpec.Builder bindArgs3 = MethodSpec.methodBuilder("inject")
-//                    .addModifiers(Modifier.PUBLIC)
-//                    .addAnnotation(Override.class)
-//                    .addParameter(bundleBinder, "binder")
-//                    .addStatement("if(binder==null){return;}")
-//                    .addStatement("this.inject(binder,true)");
-//            MethodSpec.Builder bindArgs4 = MethodSpec.methodBuilder("inject")
-//                    .addModifiers(Modifier.PUBLIC)
-//                    .addAnnotation(Override.class)
-//                    .addParameter(bundle, "bundle")
-//                    .addStatement("if(bundle==null){return;}")
-//                    .addStatement("this.inject(bundle,true)");
             List<Element> elements = elementListEntry.getValue();
             List<Element> normal = new ArrayList<>();
             List<Element> special = new ArrayList<>();
