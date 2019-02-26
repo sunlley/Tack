@@ -1,7 +1,6 @@
 package com.huoyuanjia.myapplication;
 
 import android.os.Bundle;
-import android.support.annotation.Keep;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -12,9 +11,7 @@ import com.kayo.lib.tack.annos.PasteL;
 import com.kayo.lib.tack.annos.PasteS;
 import com.kayo.lib.tack.annos.Reject;
 import com.kayo.lib.tack.api.Tack;
-import com.kayo.lib.tack.api.converter.FastJsonConverter;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Bundle bundle = Tack.createBundleFactory()
-                .setConverter(new FastJsonConverter())
+//                .setConverter(new FastJsonConverter())
                 .put("test1", "abs")
                 .put("test2", 2)
                 .put("user",new User("小明",15))
