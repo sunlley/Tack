@@ -2,17 +2,16 @@ package com.kayo.lib.tack.api;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.kayo.lib.tack.api.factories.BundleFactory;
-import com.kayo.lib.tack.api.factories.Factory;
 import com.kayo.lib.tack.api.factories.IntentFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.security.auth.login.LoginException;
 
 /**
  * Kayo
@@ -26,7 +25,7 @@ public class Tack {
      * @param target
      */
     public static void bind(Object target){
-        Log.i("Tack", "bind: Tack");
+        Log.i("Tack", "bind: Tack "+target.getClass().getSimpleName());
         Class<?> aClass = target.getClass();
         ClassLoader classLoader = aClass.getClassLoader();
         if (classLoader == null) {

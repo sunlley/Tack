@@ -1,8 +1,10 @@
 package com.huoyuanjia.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.kayo.lib.tack.annos.Inject;
 import com.kayo.lib.tack.annos.Paste;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        Tack.bind(this);
         findViewById(R.id.v_text).setOnClickListener((v)->test());
-        test();
+//        test();
 
     }
 
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         User user = Tack.createBundleFactory(bundle)
                 .get("user", User.class);
         System.out.println(user);
+        Intent intent = new Intent(this,Main2Activity.class);
+        startActivity(intent);
 
 
     }

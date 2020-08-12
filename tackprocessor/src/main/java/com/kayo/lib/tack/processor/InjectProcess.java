@@ -1,6 +1,7 @@
 package com.kayo.lib.tack.processor;
 
 import com.google.auto.service.AutoService;
+import com.kayo.lib.tack.annos.Inject;
 import com.kayo.lib.tack.annos.Reject;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
@@ -46,7 +47,7 @@ public class InjectProcess extends BaseProcess {
     public boolean handler(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Messager messager = utils.getMessager();
         messager.printMessage(Diagnostic.Kind.NOTE,"获取到APS");
-        Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(Reject.class);
+        Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(Inject.class);
         for (Element element : annotated) {
             ((JCTree) mTrees.getTree(element)).accept(new InjectVisitor(mMaker,mNames,messager));
         }
