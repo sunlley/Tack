@@ -23,8 +23,8 @@ maven { url 'https://jitpack.io' }
 
 ```Groovy
 dependencies {
-	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:0.0.3'
-	implementation 'com.github.kayoSun.Tack:tackapi:0.0.3'
+	annotationProcessor 'com.github.kayoSun.Tack:tackprocessor:${lastversion}'
+	implementation 'com.github.kayoSun.Tack:tackapi:${lastversion}'
 }
 ```
 ## Proguard
@@ -41,7 +41,7 @@ dependencies {
 |--------------|------------------|
 | 0.0.2        | Gradle 4.6       |
 | 0.0.3        | Gradle 4.6       |
-
+| 1.0.0        | Gradle 6.+       |
 
 ## About Author
 
